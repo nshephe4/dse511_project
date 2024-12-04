@@ -122,30 +122,30 @@ predicted_week14_user1 = predict(model_user1, 14);
 predicted_week14_user2 = predict(model_user2, 14);
 
 % Display predictions
-fprintf('Predicted Week 14 Score for User 1: %.2f\n', predicted_week14_user1);
-fprintf('Predicted Week 14 Score for User 2: %.2f\n', predicted_week14_user2);
+fprintf('Predicted Week 14 Score for Nathaniel: %.2f\n', predicted_week14_user1);
+fprintf('Predicted Week 14 Score for Drew: %.2f\n', predicted_week14_user2);
 
 figure;
 
 % Scatter plot for User 1
-scatter(weeks, user1_points, 'o', 'DisplayName', 'User 1 Actual');
+scatter(weeks, user1_points, 'o', 'DisplayName', 'Nathaniel Actual');
 hold on;
 
 % Line of best fit for User 1
-plot(model_user1, 'DisplayName', 'User 1 Best Fit');
+plot(model_user1, 'DisplayName', 'Nathaniel Best Fit');
 
 % Scatter plot for User 2
-scatter(weeks, user2_points, 'x', 'DisplayName', 'User 2 Actual');
+scatter(weeks, user2_points, 'x', 'DisplayName', 'Drew Actual');
 
 % Line of best fit for User 2
-plot(model_user2, 'DisplayName', 'User 2 Best Fit');
+plot(model_user2, 'DisplayName', 'Drew Best Fit');
 
 % Highlight Week 14 predictions
-scatter(14, predicted_week14_user1, 'r', 'filled', 'DisplayName', 'User 1 Predicted Week 14');
-scatter(14, predicted_week14_user2, 'b', 'filled', 'DisplayName', 'User 2 Predicted Week 14');
+scatter(14, predicted_week14_user1, 'r', 'filled', 'DisplayName', 'Nathaniel Predicted Week 14');
+scatter(14, predicted_week14_user2, 'b', 'filled', 'DisplayName', 'Drew Predicted Week 14');
 
 % Customize plot
-title('Week 14 Predictions for User 1 and User 2');
+title('Week 14 Predictions for Nathaniel and Drew');
 xlabel('Week');
 ylabel('Points');
 legend('Location', 'best');
