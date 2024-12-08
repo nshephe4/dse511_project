@@ -152,4 +152,69 @@ legend('Location', 'best');
 grid on;
 hold off;
 
+%% Overall League Predictions
+% Extract unique teams and weeks
+teams = unique(data.username); % Extract unique team names
+num_teams = numel(teams);
+weeks = 1:(width(data) - 1) / 2; % Assuming half columns are for points and half for ages
+
+% Initialize storage for predictions and colors
+predicted_week14 = zeros(num_teams, 1);
+colors = lines(num_teams); % Generate distinct colors for each team
+
+% Create a figure for plotting
+figure;
+hold on;
+
+% Initialize an array to collect legend handles
+legend_handles = [];
+
+% Loop through each team and perform regression
+for i = 1:num_teams
+    % Filter data for the current team
+    team_name = teams{i};
+    team_data = data(strcmp(data.username, team_name), :);
+    
+    % Extract weekly points for Weeks 1 to 13
+    team_points = table2array(team_data(:, contains(data.Properties.VariableNames, 'points_week')));
+    
+    % Train linear regression model
+    model = fitlm(weeks, team_points, 'linear');
+    
+    % Predict Week 14 score
+    predicted_week14(i) = predict(model, 14);
+    
+    % Scatter plot for the team's actual scores
+    scatter_handle = scatter(weeks, team_points, 'MarkerEdgeColor', colors(i, :), ...
+        'DisplayName', sprintf('%s', team_name));
+    
+    % Store the scatter handle for the legend
+    legend_handles = [legend_handles, scatter_handle];
+    
+    % Line of best fit for the team (no legend entry)
+    plot(model, 'Color', colors(i, :), 'DisplayName', '', 'HandleVisibility', 'off'); 
+end
+
+% Highlight Week 14 predictions with matching colors
+for i = 1:num_teams
+    scatter(14, predicted_week14(i), 'filled', ...
+        'MarkerEdgeColor', colors(i, :), ...
+        'MarkerFaceColor', colors(i, :), ...
+        'HandleVisibility', 'off'); % No additional legend entry
+end
+
+% Add a legend for the teams only
+legend(legend_handles, 'Location', 'bestoutside'); % Use only the collected scatter handles
+
+% Customize plot
+title('Week 14 Predictions for All Teams');
+xlabel('Week');
+ylabel('Points');
+grid on;
+hold off;
+
+% Display predicted Week 14 scores
+for i = 1:num_teams
+    fprintf('Predicted Week 14 Score for %s: %.2f\n', teams{i}, predicted_week14(i));
+end
 
